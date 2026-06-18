@@ -151,3 +151,19 @@ enum class EUnderworldState : uint8
 
 	Active					UMETA(DisplayName = "Active")
 };
+
+
+/*
+===============================================================
+                     Abilities Section
+===============================================================
+*/
+
+UENUM(BlueprintType)
+enum class EAbilityState : uint8
+{
+	Ready		UMETA(DisplayName = "Ready"),
+	Active		UMETA(DisplayName = "Active"),
+	Cooldown	UMETA(DisplayName = "Cooldown"),
+	Locked		UMETA(DisplayName = "Locked")
+};
