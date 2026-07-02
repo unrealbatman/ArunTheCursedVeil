@@ -3,6 +3,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Combat/Components/CombatComponent.h"
+#include "Combat/Data/CombatType.h"
 
 AArun::AArun()
 {
@@ -60,6 +62,9 @@ AArun::AArun()
 void AArun::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// CombatComponent is added via the character Blueprint (alongside Health/DarkImpulse), not in C++.
+	CombatComp = FindComponentByClass<UCombatComponent>();
 
 	if (GEngine)
 	{
@@ -126,4 +131,28 @@ void AArun::DeactivateUnderworldMode()
 			FColor::Green,
 			TEXT("Arun Not UnderWorld"));
 	}
+}
+
+void AArun::PerformLightAttack()
+{
+	if (!CombatComp)
+	{
+		return;
+	}
+
+	FCombatAttackRequest Request;
+	Request.AttackData = LightAttackData;
+	CombatComp->Attack(Request);
+}
+
+void AArun::PerformHeavyAttack()
+{
+	if (!CombatComp)
+	{
+		return;
+	}
+
+	FCombatAttackRequest Request;
+	Request.AttackData = HeavyAttackData;
+	CombatComp->HeavyAttack(Request);
 }

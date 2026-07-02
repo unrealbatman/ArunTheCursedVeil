@@ -5,6 +5,7 @@
 
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Character/Arun.h"
 
 AArunPC::AArunPC()
 {
@@ -71,6 +72,16 @@ void AArunPC::SetupInputComponent()
 		if (UnderworldModeAction)
 		{
 			EnhancedInput->BindAction(UnderworldModeAction,ETriggerEvent::Started,this,&AArunPC::ActivateUnderworldMode);
+		}
+
+		if (LightAttackAction)
+		{
+			EnhancedInput->BindAction(LightAttackAction,ETriggerEvent::Started,this,&AArunPC::LightAttackPressed);
+		}
+
+		if (HeavyAttackAction)
+		{
+			EnhancedInput->BindAction(HeavyAttackAction,ETriggerEvent::Started,this,&AArunPC::HeavyAttackPressed);
 		}
 	}
 }
@@ -165,4 +176,27 @@ void AArunPC::LockOnPressed()
 void AArunPC::ActivateUnderworldMode()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Underworld Mode Activated"));
+}
+
+void AArunPC::LightAttackPressed()
+{if (GEngine)
+{
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		5.f,
+		FColor::Green,
+		TEXT("Arun Not UnderWorld"));
+}
+	if (AArun* ControlledArun = Cast<AArun>(GetPawn()))
+	{
+		ControlledArun->PerformLightAttack();
+	}
+}
+
+void AArunPC::HeavyAttackPressed()
+{
+	if (AArun* ControlledArun = Cast<AArun>(GetPawn()))
+	{
+		ControlledArun->PerformHeavyAttack();
+	}
 }

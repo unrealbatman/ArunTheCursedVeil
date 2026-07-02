@@ -6,6 +6,8 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UCombatComponent;
+class UAttackData;
 
 UCLASS()
 class ARUNTHECURSEDVEIL_API AArun : public ACharacter
@@ -38,6 +40,22 @@ protected:
 
 #pragma endregion
 
+#pragma region Combat
+
+	// Assigned in the editor - which UAttackData asset each input maps to.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	TObjectPtr<UAttackData> LightAttackData;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	TObjectPtr<UAttackData> HeavyAttackData;
+
+private:
+	// Cached on BeginPlay - CombatComponent is added in the character Blueprint, not in C++.
+	UPROPERTY()
+	TObjectPtr<UCombatComponent> CombatComp;
+
+#pragma endregion
+
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -49,6 +67,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DeactivateUnderworldMode();
 
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void PerformLightAttack();
+
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void PerformHeavyAttack();
+
 	FORCEINLINE UCameraComponent* GetFollowCamera() const
 	{
 		return FollowCamera;
@@ -57,5 +81,10 @@ public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const
 	{
 		return CameraBoom;
+	}
+
+	FORCEINLINE UCombatComponent* GetCombatComponent() const
+	{
+		return CombatComp;
 	}
 };

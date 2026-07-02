@@ -1,6 +1,7 @@
 #include "Ability/BaseAbility.h"
 
 #include "Character/Arun.h"
+#include "Combat/Components/CombatComponent.h"
 
 #include "Engine/Engine.h"
 #include "TimerManager.h"
@@ -15,6 +16,8 @@ void UBaseAbility::BeginPlay()
 	Super::BeginPlay();
 
 	OwnerArun = Cast<AArun>(GetOwner());
+
+	CombatComp = GetOwner() ? GetOwner()->FindComponentByClass<UCombatComponent>() : nullptr;
 
 	bUnlocked = bStartsUnlocked;
 
@@ -53,6 +56,12 @@ bool UBaseAbility::CanActivateAbility() const
 bool UBaseAbility::ActivateAbility()
 {
 	if (!CanActivateAbility())
+	{
+		return false;
+	}
+
+	// Ask combat for permission first - combat owns state, abilities only request it (spec section 9).
+	if (CombatComp && !CombatComp->TryEnterAbilityState())
 	{
 		return false;
 	}
@@ -96,6 +105,11 @@ void UBaseAbility::DeactivateAbility()
 	if (AbilityState != EAbilityState::Active)
 	{
 		return;
+	}
+
+	if (CombatComp)
+	{
+		CombatComp->ExitAbilityState();
 	}
 
 	BP_OnAbilityDeactivated();

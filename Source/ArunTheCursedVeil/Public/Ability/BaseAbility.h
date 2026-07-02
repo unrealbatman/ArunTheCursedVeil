@@ -6,6 +6,7 @@
 #include "BaseAbility.generated.h"
 
 class AArun;
+class UCombatComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAbilityActivated);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAbilityDeactivated);
@@ -57,6 +58,10 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<AArun> OwnerArun;
+
+	// Phase 9: abilities request the Ability combat state through this, they never set it directly.
+	UPROPERTY()
+	TObjectPtr<UCombatComponent> CombatComp;
 
 	FTimerHandle AbilityDurationTimerHandle;
 

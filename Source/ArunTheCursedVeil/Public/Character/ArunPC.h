@@ -55,6 +55,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> UnderworldModeAction;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> LightAttackAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> HeavyAttackAction;
+
 #pragma endregion
 
 #pragma region InputFunctions
@@ -73,6 +79,9 @@ protected:
 	void LockOnPressed();
 
 	void ActivateUnderworldMode();
+
+	void LightAttackPressed();
+	void HeavyAttackPressed();
 
 #pragma endregion
 
